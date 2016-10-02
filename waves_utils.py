@@ -82,6 +82,7 @@ class WavesUtilities:
         self._sc = spark_context
         self._db_dir = hdfs_db_path
         self._dq = dq.DrillQueries("drill_eds", voi)
+	self._colors = ['#40bf80', '#668cff', '#ffa64d', '#ff33bb', '#330033', '#4dffc3', '#805500', '#999900']
 
     def get_waves_from_pdf(self, all_waves):
         """
@@ -107,10 +108,10 @@ class WavesUtilities:
         :return: None
         """
         plt.figure(figsize=(15, 5))
-        for metric in waves.keys():
+        for i, metric in enumerate(waves.keys()):
             label = self._dic.get_label(metric)
-            plt.plot(waves[metric].dt_insert.values, waves[metric].value_numeric.values, label=label)
-            plt.plot(waves[metric].dt_insert.values, waves[metric].value_numeric.values, '*')
+            plt.plot(waves[metric].dt_insert.values, waves[metric].value_numeric.values, label=label, color=self._colors[i % len(self._colors)], linewidth=3.0)
+            plt.plot(waves[metric].dt_insert.values, waves[metric].value_numeric.values, '*', color='#000000')
             plt.legend()
 
     def norm_waves(self, df_ranges, df_sensor_case, nb_pts, method='time'):
